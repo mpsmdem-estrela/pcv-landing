@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PCV — Plataforma de Prestação de Contas de Viagens | MP Serviços</title>
+<meta name="description" content="O PCV organiza o ciclo completo do recurso de viagens — do repasse à contabilização — com rastreabilidade documental e assinaturas eletrônicas.">
+
+<!-- Open Graph (WhatsApp, LinkedIn, Facebook) -->
+<meta property="og:title" content="PCV — Plataforma de Prestação de Contas de Viagens">
+<meta property="og:description" content="Governança e rastreabilidade para recursos de viagens. Do repasse à contabilização.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://pcv-prestacao-contas.netlify.app">
+<meta property="og:image" content="https://pcv-prestacao-contas.netlify.app/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="PCV — Cadê os documentos?">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:site_name" content="PCV — Prestação de Contas de Viagens">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="PCV — Plataforma de Prestação de Contas de Viagens">
+<meta name="twitter:description" content="Governança e rastreabilidade para recursos de viagens. Do repasse à contabilização.">
+<meta name="twitter:image" content="https://pcv-prestacao-contas.netlify.app/og-image.jpg">
+
+<!-- Favicon (arquivos gerados pelo realfavicongenerator.net) -->
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="icon" type="image/png" sizes="96x96" href="favicon-96x96.png">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<meta name="theme-color" content="#0F2233">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --azul-institucional: #0F2233;
+  --azul-tecnico: #2E5A88;
+  --azul-medio: #1F3F5B;
+  --azul-claro: #4F7FB3;
+  --cinza-metalico: #9AA3A8;
+  --cinza-claro: #F4F6F8;
+  --branco: #FFFFFF;
+  --borda: rgba(46, 90, 136, 0.3);
+  --vermelho: #E74C3C;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--azul-institucional);
+  color: var(--cinza-claro);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ===== CABEÇALHO ===== */
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: rgba(15, 34, 51, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--borda);
+  z-index: 1000;
+  padding: 14px 0;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo-area {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.logo-halo {
+  position: relative;
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.logo-halo::before {
+  content: '';
+  position: absolute;
+  inset: -14px;
+  background: radial-gradient(circle, rgba(79, 127, 179, 0.55) 0%, rgba(79, 127, 179, 0.18) 45%, transparent 75%);
+  border-radius: 50%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.logo-halo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  position: relative;
+  z-index: 1;
+  filter: drop-shadow(0 0 8px rgba(79, 127, 179, 0.6)) brightness(1.1);
+}
+
+.logo-fallback {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 800;
+  font-size: 22px;
+  color: var(--branco);
+  letter-spacing: -1px;
+  position: relative;
+  z-index: 1;
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.brand-name {
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--branco);
+}
+
+.brand-product {
+  font-size: 11px;
+  color: var(--azul-claro);
+  font-weight: 600;
+  letter-spacing: 1.5px;
+}
+
+nav ul {
+  display: flex;
+  gap: 28px;
+  list-style: none;
+}
+
+nav a {
+  color: var(--cinza-claro);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+nav a:hover { color: var(--azul-claro); }
+
+/* ===== HERO ===== */
+.hero {
+  padding: 160px 0 100px;
+  background: linear-gradient(180deg, var(--azul-institucional) 0%, var(--azul-medio) 100%);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 800px;
+  height: 800px;
+  background: radial-gradient(circle, rgba(46, 90, 136, 0.25) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.hero .container { position: relative; z-index: 1; }
+
+.hero-eyebrow {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--azul-claro);
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  padding: 8px 16px;
+  border: 1px solid var(--borda);
+  border-radius: 20px;
+  background: rgba(46, 90, 136, 0.15);
+}
+
+.hero h1 {
+  font-size: 54px;
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 24px;
+  color: var(--branco);
+  letter-spacing: -1.2px;
+}
+
+.hero p {
+  font-size: 18px;
+  color: var(--cinza-metalico);
+  max-width: 720px;
+  margin: 0 auto 40px;
+  line-height: 1.7;
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn {
+  display: inline-block;
+  padding: 16px 32px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 15px;
+  text-decoration: none;
+  transition: all 0.2s;
+  font-family: 'Montserrat', sans-serif;
+  cursor: pointer;
+  border: none;
+}
+
+.btn-primary {
+  background: var(--azul-tecnico);
+  color: var(--branco);
+}
+
+.btn-primary:hover {
+  background: var(--azul-claro);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(79, 127, 179, 0.35);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--cinza-claro);
+  border: 1px solid var(--borda);
+}
+
+.btn-secondary:hover {
+  border-color: var(--azul-claro);
+  color: var(--branco);
+}
+
+/* ===== SEÇÕES ===== */
+section { padding: 80px 0; }
+
+.section-title {
+  font-size: 36px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  color: var(--branco);
+  letter-spacing: -0.5px;
+  text-align: center;
+}
+
+.section-subtitle {
+  font-size: 17px;
+  color: var(--cinza-metalico);
+  text-align: center;
+  max-width: 680px;
+  margin: 0 auto 56px;
+  line-height: 1.7;
+}
+
+/* ===== PROBLEMA ===== */
+.problema { background: var(--azul-medio); }
+
+.problema-list {
+  list-style: none;
+  max-width: 820px;
+  margin: 0 auto;
+}
+
+.problema-list li {
+  padding: 16px 20px;
+  background: rgba(15, 34, 51, 0.6);
+  border-left: 3px solid var(--vermelho);
+  margin-bottom: 12px;
+  border-radius: 6px;
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  font-size: 15px;
+}
+
+.problema-list li span.icon {
+  color: var(--vermelho);
+  font-weight: 700;
+  flex-shrink: 0;
+  font-size: 18px;
+  line-height: 1.4;
+}
+
+.problema-fechamento {
+  text-align: center;
+  margin-top: 40px;
+  font-size: 17px;
+  font-weight: 500;
+  color: var(--branco);
+  padding: 24px;
+  background: rgba(46, 90, 136, 0.2);
+  border-radius: 8px;
+  border: 1px solid var(--borda);
+  max-width: 820px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ===== COMO FUNCIONA ===== */
+.passos {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 40px;
+}
+
+.passo-card {
+  background: var(--azul-medio);
+  padding: 28px;
+  border-radius: 10px;
+  border: 1px solid var(--borda);
+  transition: transform 0.2s, border-color 0.2s;
+}
+
+.passo-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--azul-claro);
+}
+
+.passo-numero {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--azul-claro);
+  margin-bottom: 12px;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.passo-card h3 {
+  font-size: 17px;
+  margin-bottom: 10px;
+  color: var(--branco);
+  font-weight: 700;
+}
+
+.passo-card p {
+  font-size: 14px;
+  color: var(--cinza-metalico);
+  line-height: 1.6;
+}
+
+.fluxo {
+  margin-top: 48px;
+  padding: 24px;
+  background: rgba(46, 90, 136, 0.15);
+  border-radius: 10px;
+  border: 1px solid var(--borda);
+  text-align: center;
+  font-size: 13px;
+  color: var(--cinza-claro);
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+/* ===== FUNCIONALIDADES ===== */
+.funcionalidades { background: var(--azul-medio); }
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 40px;
+}
+
+.card {
+  background: var(--azul-institucional);
+  padding: 28px;
+  border-radius: 10px;
+  border: 1px solid var(--borda);
+  transition: transform 0.2s, border-color 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  border-color: var(--azul-claro);
+}
+
+.card-icon {
+  font-size: 26px;
+  margin-bottom: 16px;
+  display: block;
+  color: var(--azul-claro);
+  font-weight: 700;
+}
+
+.card h3 {
+  font-size: 16px;
+  margin-bottom: 10px;
+  color: var(--branco);
+  font-weight: 700;
+}
+
+.card p {
+  font-size: 14px;
+  color: var(--cinza-metalico);
+  line-height: 1.6;
+}
+
+/* ===== PARA QUEM ===== */
+.para-quem-content {
+  max-width: 820px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.para-quem-content > p {
+  font-size: 17px;
+  color: var(--cinza-metalico);
+  margin-bottom: 32px;
+  line-height: 1.7;
+}
+
+.lista-publico {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.lista-publico li {
+  padding: 16px 20px;
+  background: var(--azul-medio);
+  border-radius: 8px;
+  border: 1px solid var(--borda);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--cinza-claro);
+  text-align: left;
+  transition: border-color 0.2s;
+}
+
+.lista-publico li:hover { border-color: var(--azul-claro); }
+
+/* ===== DIFERENCIAIS ===== */
+.diferenciais { background: var(--azul-medio); }
+
+.diferenciais-list {
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.diferencial-item {
+  display: flex;
+  gap: 20px;
+  padding: 24px;
+  background: var(--azul-institucional);
+  border-radius: 10px;
+  border-left: 3px solid var(--azul-claro);
+  transition: transform 0.2s;
+}
+
+.diferencial-item:hover { transform: translateX(4px); }
+
+.diferencial-numero {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--azul-claro);
+  flex-shrink: 0;
+  min-width: 36px;
+  font-family: 'Montserrat', sans-serif;
+  padding-top: 2px;
+}
+
+.diferencial-item h3 {
+  font-size: 16px;
+  margin-bottom: 6px;
+  color: var(--branco);
+  font-weight: 700;
+}
+
+.diferencial-item p {
+  font-size: 14px;
+  color: var(--cinza-metalico);
+  line-height: 1.6;
+}
+
+/* ===== CONTATO ===== */
+.contato-form {
+  max-width: 600px;
+  margin: 40px auto 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.contato-form label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--cinza-claro);
+  margin-bottom: 8px;
+  letter-spacing: 0.5px;
+}
+
+.contato-form input,
+.contato-form textarea {
+  width: 100%;
+  padding: 14px 16px;
+  background: var(--azul-medio);
+  border: 1px solid var(--borda);
+  border-radius: 8px;
+  color: var(--branco);
+  font-family: 'Montserrat', sans-serif;
+  font-size: 15px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.contato-form input:focus,
+.contato-form textarea:focus {
+  outline: none;
+  border-color: var(--azul-claro);
+  box-shadow: 0 0 0 3px rgba(79, 127, 179, 0.2);
+}
+
+.contato-form textarea {
+  resize: vertical;
+  min-height: 140px;
+}
+
+.contato-form button {
+  padding: 16px 32px;
+  background: var(--azul-tecnico);
+  color: var(--branco);
+  border: none;
+  border-radius: 8px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.contato-form button:hover {
+  background: var(--azul-claro);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(79, 127, 179, 0.35);
+}
+
+.form-obrigatorio {
+  font-size: 13px;
+  color: var(--cinza-metalico);
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+/* ===== RODAPÉ ===== */
+footer {
+  background: var(--azul-institucional);
+  border-top: 1px solid var(--borda);
+  padding: 48px 0 32px;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 32px;
+  margin-bottom: 32px;
+}
+
+.footer-brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.footer-brand .logo-halo {
+  width: 42px;
+  height: 42px;
+}
+
+.footer-brand-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.footer-brand-name {
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--branco);
+}
+
+.footer-brand-tag {
+  font-size: 12px;
+  color: var(--cinza-metalico);
+}
+
+.footer-contato {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.footer-contato a {
+  color: var(--cinza-metalico);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.footer-contato a:hover { color: var(--azul-claro); }
+
+.footer-links {
+  display: flex;
+  gap: 24px;
+  list-style: none;
+  flex-wrap: wrap;
+}
+
+.footer-links a {
+  color: var(--cinza-metalico);
+  text-decoration: none;
+  font-size: 13px;
+  transition: color 0.2s;
+}
+
+.footer-links a:hover { color: var(--azul-claro); }
+
+.footer-bottom {
+  border-top: 1px solid var(--borda);
+  padding-top: 24px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--cinza-metalico);
+}
+
+/* ===== WHATSAPP FLUTUANTE ===== */
+.whatsapp-float {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 60px;
+  height: 60px;
+  background: #25D366;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(37, 211, 102, 0.4);
+  z-index: 1000;
+  transition: all 0.3s;
+  text-decoration: none;
+}
+
+.whatsapp-float:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 24px rgba(37, 211, 102, 0.6);
+}
+
+.whatsapp-float svg {
+  width: 32px;
+  height: 32px;
+  fill: var(--branco);
+}
+
+/* ===== RESPONSIVO ===== */
+@media (max-width: 900px) {
+  nav ul { display: none; }
+  .hero h1 { font-size: 38px; }
+  .passos { grid-template-columns: 1fr; }
+  .cards-grid { grid-template-columns: 1fr; }
+  .lista-publico { grid-template-columns: 1fr; }
+  .footer-content { flex-direction: column; align-items: flex-start; }
+  .section-title { font-size: 28px; }
+}
+
+@media (max-width: 600px) {
+  .hero { padding: 130px 0 60px; }
+  .hero h1 { font-size: 30px; letter-spacing: -0.5px; }
+  .hero p { font-size: 15px; }
+  .section-title { font-size: 24px; }
+  section { padding: 56px 0; }
+  .btn { width: 100%; text-align: center; }
+  .hero-buttons { flex-direction: column; width: 100%; max-width: 320px; margin: 0 auto; }
+  .whatsapp-float { bottom: 80px; right: 16px; width: 54px; height: 54px; }
+  .whatsapp-float svg { width: 28px; height: 28px; }
+  .container { padding: 0 20px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ===== CABEÇALHO ===== -->
+<header>
+  <div class="container header-content">
+    <div class="logo-area">
+      <div class="logo-halo">
+        <img src="logo.png" alt="MP Serviços" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+        <span class="logo-fallback" style="display:none;">MP</span>
+      </div>
+      <div class="brand-text">
+        <span class="brand-name">MP Serviços</span>
+        <span class="brand-product">PCV</span>
+      </div>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="#problema">O problema</a></li>
+        <li><a href="#como-funciona">Como funciona</a></li>
+        <li><a href="#funcionalidades">Funcionalidades</a></li>
+        <li><a href="#diferenciais">Diferenciais</a></li>
+        <li><a href="#contato">Contato</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="container">
+    <span class="hero-eyebrow">Plataforma de gestão de viagens e eventos</span>
+    <h1>PCV — Prestação de Contas de Viagens</h1>
+    <p>O PCV organiza o ciclo completo do recurso concedido — do repasse à contabilização — com rastreabilidade documental, assinaturas eletrônicas e governança para organizações que prestam contas.</p>
+    <div class="hero-buttons">
+      <a href="#contato" class="btn btn-primary">Falar com especialista</a>
+      <a href="#como-funciona" class="btn btn-secondary">Ver como funciona</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PROBLEMA ===== -->
+<section class="problema" id="problema">
+  <div class="container">
+    <h2 class="section-title">O problema que ninguém quer encarar</h2>
+    <p class="section-subtitle">Quando o recurso passa por planilhas, e-mails, documentos e pastas sem vínculo formal, a prestação perde rastreabilidade — e a transparência fica comprometida.</p>
+    <ul class="problema-list">
+      <li><span class="icon">×</span> Viagens de campo sem fluxo único de prestação de contas</li>
+      <li><span class="icon">×</span> Planilhas perdidas, comprovantes soltos, recibos sem assinatura</li>
+      <li><span class="icon">×</span> E-mails e protocolos sem rastreabilidade</li>
+      <li><span class="icon">×</span> No fim do ciclo, a organização não consegue reunir as evidências para o financiador</li>
+      <li><span class="icon">!</span> Pergunta que ninguém quer ouvir: "Cadê os documentos?"</li>
+    </ul>
+    <div class="problema-fechamento">
+      Não é falta de vontade da equipe. É falta de governança e compliance.
+    </div>
+  </div>
+</section>
+
+<!-- ===== COMO FUNCIONA ===== -->
+<section id="como-funciona">
+  <div class="container">
+    <h2 class="section-title">Como funciona o PCV</h2>
+    <p class="section-subtitle">O evento é a unidade central. A partir dele, a plataforma organiza repasses, recebedores, prestação, despesas, documentos, análise e contabilização.</p>
+    <div class="passos">
+      <div class="passo-card">
+        <div class="passo-numero">01</div>
+        <h3>Evento cadastrado</h3>
+        <p>O evento define a finalidade, período, local, objetivo e histórico do recurso.</p>
+      </div>
+      <div class="passo-card">
+        <div class="passo-numero">02</div>
+        <h3>Repasse registrado</h3>
+        <p>O Financeiro registra o recurso concedido ao participante do evento.</p>
+      </div>
+      <div class="passo-card">
+        <div class="passo-numero">03</div>
+        <h3>Recebedor provisionado</h3>
+        <p>O cadastro do recebedor é criado ou reutilizado automaticamente conforme seu CPF.</p>
+      </div>
+      <div class="passo-card">
+        <div class="passo-numero">04</div>
+        <h3>Manual e Recibo assinados</h3>
+        <p>A ciência documental ocorre antes que despesas possam ser lançadas.</p>
+      </div>
+      <div class="passo-card">
+        <div class="passo-numero">05</div>
+        <h3>Despesas e comprovantes</h3>
+        <p>Despesas são registradas e os comprovantes ficam vinculados à prestação.</p>
+      </div>
+      <div class="passo-card">
+        <div class="passo-numero">06</div>
+        <h3>Análise e encerramento</h3>
+        <p>O Financeiro analisa, finaliza e a Contabilidade realiza o fechamento contábil.</p>
+      </div>
+    </div>
+    <div class="fluxo">
+      Evento → Repasse → Recebedor → Prestação → Despesas → Comprovantes → Análise → Contabilização
+    </div>
+  </div>
+</section>
+
+<!-- ===== FUNCIONALIDADES ===== -->
+<section class="funcionalidades" id="funcionalidades">
+  <div class="container">
+    <h2 class="section-title">O que o PCV entrega</h2>
+    <p class="section-subtitle">Estrutura, regras e histórico para transformar uma prestação dispersa em um processo controlado.</p>
+    <div class="cards-grid">
+      <div class="card">
+        <span class="card-icon">◈</span>
+        <h3>Controle de eventos e repasses</h3>
+        <p>Organize eventos, recursos concedidos, recebedores e respectivos vínculos.</p>
+      </div>
+      <div class="card">
+        <span class="card-icon">✓</span>
+        <h3>Ciência documental antes das despesas</h3>
+        <p>Manual e Recibo precisam ser visualizados e assinados antes do lançamento de despesas.</p>
+      </div>
+      <div class="card">
+        <span class="card-icon">⏱</span>
+        <h3>Prazo automático</h3>
+        <p>O prazo padrão considera a data final do evento mais 72 horas.</p>
+      </div>
+      <div class="card">
+        <span class="card-icon">▣</span>
+        <h3>Pacote único de comprovantes</h3>
+        <p>Os documentos ficam vinculados à prestação, evitando múltiplos pacotes desconectados.</p>
+      </div>
+      <div class="card">
+        <span class="card-icon">⌁</span>
+        <h3>Assinaturas eletrônicas rastreáveis</h3>
+        <p>Registre e-mail, timestamp, ID de transação, hash, documento e número da prestação.</p>
+      </div>
+      <div class="card">
+        <span class="card-icon">▤</span>
+        <h3>Análise, contabilização e histórico</h3>
+        <p>Financeiro e Contabilidade atuam em etapas distintas, com histórico das operações.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PARA QUEM ===== -->
+<section id="para-quem">
+  <div class="container">
+    <h2 class="section-title">Para quem é o PCV</h2>
+    <div class="para-quem-content">
+      <p>Organizações do terceiro setor, institutos, fundações e empresas que prestam contas a financiadores, auditorias ou órgãos internos.</p>
+      <ul class="lista-publico">
+        <li>ONGs e OSCIPs</li>
+        <li>Institutos e fundações</li>
+        <li>Projetos com recursos nacionais ou internacionais</li>
+        <li>Empresas que controlam despesas de viagens</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ===== DIFERENCIAIS ===== -->
+<section class="diferenciais" id="diferenciais">
+  <div class="container">
+    <h2 class="section-title">Por que o PCV é diferente</h2>
+    <p class="section-subtitle">O desenho da plataforma trata o recurso, a documentação e o histórico como partes de um mesmo processo.</p>
+    <div class="diferenciais-list">
+      <div class="diferencial-item">
+        <span class="diferencial-numero">01</span>
+        <div>
+          <h3>Não trata o repasse como simples cadastro</h3>
+          <p>O repasse é a origem da prestação, do prazo, dos documentos e do histórico financeiro.</p>
+        </div>
+      </div>
+      <div class="diferencial-item">
+        <span class="diferencial-numero">02</span>
+        <div>
+          <h3>Obriga a ciência documental</h3>
+          <p>O recebedor precisa visualizar e assinar Manual e Recibo antes das despesas.</p>
+        </div>
+      </div>
+      <div class="diferencial-item">
+        <span class="diferencial-numero">03</span>
+        <div>
+          <h3>Preserva o histórico sem apagar o passado</h3>
+          <p>Operações relevantes permanecem registradas no histórico da plataforma.</p>
+        </div>
+      </div>
+      <div class="diferencial-item">
+        <span class="diferencial-numero">04</span>
+        <div>
+          <h3>Controla duplicidade</h3>
+          <p>Há controles para usuários, recebedores, prestações, pacotes e registros críticos.</p>
+        </div>
+      </div>
+      <div class="diferencial-item">
+        <span class="diferencial-numero">05</span>
+        <div>
+          <h3>Roda no Google Workspace</h3>
+          <p>Utiliza Google Apps Script, Google Sheets e Google Drive, sem exigir infraestrutura própria inicial.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CONTATO ===== -->
+<section id="contato">
+  <div class="container">
+    <h2 class="section-title">Fale com um especialista</h2>
+    <p class="section-subtitle">Preencha o formulário e retornaremos em até 1 dia útil.</p>
+    <form class="contact-form contato-form" action="https://formspree.io/f/xvkgqgnb" method="POST">
+      <p class="form-obrigatorio">Os campos marcados com * são obrigatórios.</p>
+      <div>
+        <label for="nome">Nome *</label>
+        <input type="text" id="nome" name="nome" required>
+      </div>
+      <div>
+        <label for="email">E-mail *</label>
+        <input type="email" id="email" name="email" required>
+      </div>
+      <div>
+        <label for="mensagem">Mensagem *</label>
+        <textarea id="mensagem" name="mensagem" required></textarea>
+      </div>
+      <button type="submit">Enviar mensagem</button>
+    </form>
+  </div>
+</section>
+
+<!-- ===== RODAPÉ ===== -->
+<footer>
+  <div class="container">
+    <div class="footer-content">
+      <div class="footer-brand">
+        <div class="logo-halo">
+          <img src="logo.png" alt="MP Serviços" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+          <span class="logo-fallback" style="display:none;">MP</span>
+        </div>
+        <div class="footer-brand-text">
+          <span class="footer-brand-name">MP Serviços</span>
+          <span class="footer-brand-tag">PCV — Prestação de Contas de Viagens</span>
+        </div>
+      </div>
+      <div class="footer-contato">
+        <a href="mailto:mpsmdem@gmail.com">mpsmdem@gmail.com</a>
+        <a href="https://wa.me/5592985537155">(92) 98553-7155</a>
+      </div>
+      <ul class="footer-links">
+        <li><a href="#problema">O problema</a></li>
+        <li><a href="#como-funciona">Como funciona</a></li>
+        <li><a href="#funcionalidades">Funcionalidades</a></li>
+        <li><a href="#contato">Contato</a></li>
+      </ul>
+    </div>
+    <div class="footer-bottom">
+      © 2026 MP Serviços. Todos os direitos reservados. PCV é uma plataforma de gestão de prestação de contas.
+    </div>
+  </div>
+</footer>
+
+<!-- ===== WHATSAPP FLUTUANTE ===== -->
+<a href="https://wa.me/5592985537155?text=Ol%C3%A1%2C%20quero%20saber%20mais%20sobre%20o%20PCV" class="whatsapp-float" target="_blank" rel="noopener" aria-label="Falar no WhatsApp">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32" fill="#ffffff">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+  </svg>
+</a>
+</body>
+</html>
